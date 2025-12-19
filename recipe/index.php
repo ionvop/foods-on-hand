@@ -23,6 +23,14 @@ $categoryMap = [
     "seafood" => "Seafood"
 ];
 
+$query = <<<SQL
+    SELECT * FROM `users` WHERE `id` = :id
+SQL;
+
+$stmt = $db->prepare($query);
+$stmt->bindValue(":id", $recipe["user_id"]);
+$author = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+
 ?>
 
 <html>
@@ -41,7 +49,7 @@ $categoryMap = [
         </style>
     </head>
     <body>
-        <?= renderHeader($recipe["title"], "Author: " . $user["firstname"] . " " . $user["lastname"]) ?>
+        <?= renderHeader($recipe["title"], "Author: " . $author["firstname"] . " " . $author["lastname"]) ?>
         <div style="
             display: grid;
             grid-template-columns: minmax(0, 2fr) 1fr;"
