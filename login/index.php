@@ -47,7 +47,8 @@ require_once "common.php";
                         border: none;
                         border-bottom: 1px solid #000;"
                         name="username"
-                        placeholder="Username">
+                        placeholder="Username"
+                        required>
                 </div>
                 <div style="
                     padding: 1rem;">
@@ -57,7 +58,8 @@ require_once "common.php";
                         border-bottom: 1px solid #000;"
                         name="password"
                         type="password"
-                        placeholder="Password">
+                        placeholder="Password"
+                        required>
                 </div>
                 <div></div>
                 <div style="
