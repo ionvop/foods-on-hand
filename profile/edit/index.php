@@ -50,7 +50,8 @@ if ($user == false) {
                         padding-top: 0rem;
                         text-align: center;">
                         <input name="firstname"
-                            value="<?= htmlentities($user["firstname"]) ?>">
+                            value="<?= htmlentities($user["firstname"]) ?>"
+                            required>
                     </div>
                     <div style="
                         padding: 1rem;">
@@ -61,7 +62,8 @@ if ($user == false) {
                         padding-top: 0rem;
                         text-align: center;">
                         <input name="lastname"
-                            value="<?= htmlentities($user["lastname"]) ?>">
+                            value="<?= htmlentities($user["lastname"]) ?>"
+                            required>
                     </div>
                     <div style="
                         padding: 1rem;">
@@ -72,7 +74,8 @@ if ($user == false) {
                         padding-top: 0rem;
                         text-align: center;">
                         <input name="phone"
-                            value="<?= htmlentities($user["phone"]) ?>">
+                            value="<?= htmlentities($user["phone"]) ?>"
+                            required>
                     </div>
                     <div style="
                         padding: 1rem;
@@ -106,7 +109,8 @@ if ($user == false) {
                         padding-top: 0rem;
                         text-align: center;">
                         <input type="password"
-                            name="oldpassword">
+                            name="oldpassword"
+                            required>
                     </div>
                     <div style="
                         padding: 1rem;">
@@ -117,7 +121,8 @@ if ($user == false) {
                         padding-top: 0rem;
                         text-align: center;">
                         <input type="password"
-                            name="newpassword">
+                            name="newpassword"
+                            required>
                     </div>
                     <div style="
                         padding: 1rem;">
@@ -128,7 +133,8 @@ if ($user == false) {
                         padding-top: 0rem;
                         text-align: center;">
                         <input type="password"
-                            name="repassword">
+                            name="repassword"
+                            required>
                     </div>
                     <div style="
                         padding: 1rem;
