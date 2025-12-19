@@ -182,7 +182,19 @@ function renderFooter() {
             background-color: #555;
             color: #fff;
             text-align: center;">
-            jadepadayhag4444@gmail.com
+            <div style="
+                padding: 1rem;
+                font-weight: bold;">
+                Contact Us
+            </div>
+            <div style="
+                padding: 1rem;">
+                jadepadayhag4444@gmail.com
+            </div>
+            <div style="
+                padding: 1rem;">
+                +63 951 1054 683
+            </div>
         </div>
     HTML;
 }
