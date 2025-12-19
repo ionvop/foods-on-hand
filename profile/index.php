@@ -39,6 +39,8 @@ $db = new SQLite3("database.db");
                     Recipes
                 </div>
                 <div style="
+                    display: grid;
+                    grid-template-columns: repeat(2, 1fr);
                     padding: 1rem;
                     padding-top: 0rem;">
                     <?php
