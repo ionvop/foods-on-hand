@@ -39,6 +39,8 @@ if (isset($_GET["category"])) {
                     Recipes
                 </div>
                 <div style="
+                    display: grid;
+                    grid-template-columns: repeat(2, 1fr);
                     padding: 1rem;
                     padding-top: 2rem;">
                     <?php
