@@ -30,7 +30,8 @@ if (isset($_GET["category"])) {
         <div style="
             display: grid;
             grid-template-columns: 2fr 1fr;"
-            id="panelPosts">
+            data-mobile="
+            grid-template-columns: 1fr;">
             <div>
                 <div style="
                     padding: 1rem;
@@ -124,22 +125,10 @@ if (isset($_GET["category"])) {
         <script src="script.js"></script>
         <script>
             const selectCategories = document.getElementById("selectCategories");
-            const panelPosts = document.getElementById("panelPosts");
             initialize();
 
             function initialize() {
-                const panelPostsOriginalStyles = panelPosts.style.cssText;
                 selectCategories.value = <?= json_encode($category) ?>;
-
-                window.onresize = () => {
-                    if (window.innerHeight > window.innerWidth) {
-                        panelPosts.style.gridTemplateColumns = "1fr";
-                    } else {
-                        panelPosts.style.cssText = panelPostsOriginalStyles;
-                    }
-                }
-
-                window.onresize();
             }
 
             selectCategories.onchange = () => {
