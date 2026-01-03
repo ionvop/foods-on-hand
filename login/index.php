@@ -23,7 +23,8 @@ require_once "common.php";
         <div style="
             display: grid;
             grid-template-columns: repeat(2, 1fr);"
-            id="panelPosts">
+            data-mobile="
+            grid-template-columns: minmax(0, 1fr);">
             <form style="
                 display: grid;
                 grid-template-rows: repeat(3, max-content) 1fr, max-content;
@@ -172,22 +173,7 @@ require_once "common.php";
         <?= renderFooter() ?>
         <script src="script.js"></script>
         <script>
-            const panelPosts = document.getElementById("panelPosts");
-            initialize();
 
-            function initialize() {
-                const panelPostsOriginalStyles = panelPosts.style.cssText;
-
-                window.onresize = () => {
-                    if (window.innerHeight > window.innerWidth) {
-                        panelPosts.style.gridTemplateColumns = "minmax(0, 1fr)";
-                    } else {
-                        panelPosts.style.cssText = panelPostsOriginalStyles;
-                    }
-                }
-
-                window.onresize();
-            }
         </script>
     </body>
 </html>
