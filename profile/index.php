@@ -30,7 +30,8 @@ $db = new SQLite3("database.db");
         <div style="
             display: grid;
             grid-template-columns: 2fr 1fr;"
-            id="panelPosts">
+            data-mobile="
+            grid-template-columns: minmax(0, 1fr);">
             <div>
                 <div style="
                     padding: 1rem;
@@ -106,22 +107,7 @@ $db = new SQLite3("database.db");
         <?= renderFooter() ?>
         <script src="script.js"></script>
         <script>
-            const panelPosts = document.getElementById("panelPosts");
-            initialize();
-
-            function initialize() {
-                const panelPostsOriginalStyles = panelPosts.style.cssText;
-
-                window.onresize = () => {
-                    if (window.innerHeight > window.innerWidth) {
-                        panelPosts.style.gridTemplateColumns = "minmax(0, 1fr)";
-                    } else {
-                        panelPosts.style.cssText = panelPostsOriginalStyles;
-                    }
-                }
-
-                window.onresize();
-            }
+            
         </script>
     </body>
 </html>
