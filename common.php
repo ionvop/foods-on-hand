@@ -82,7 +82,8 @@ function renderHeader($title, $description) {
             color: #fff;
             font-weight: bold;
             cursor: pointer;"
-            class="g_panelTab"
+            data-mobile="
+            padding: 2rem;"
             href="login/">
             LOGIN
         </a>
@@ -96,7 +97,8 @@ function renderHeader($title, $description) {
                 color: #fff;
                 font-weight: bold;
                 cursor: pointer;"
-                class="g_panelTab"
+                data-mobile="
+                padding: 2rem;"
                 href="profile/">
                 PROFILE
             </a>
@@ -111,13 +113,18 @@ function renderHeader($title, $description) {
             background-size: cover;
             background-attachment: fixed;
             background-position: center;"
-            id="g_panelBackground">
+            data-mobile="
+            height: 40rem;
+            background-attachment: scroll;
+            background-size: cover;">
             <div>
                 <div style="
                     display: grid;
                     grid-template-columns: 1fr repeat(3, max-content) 5rem;
                     background-color: #a00;"
-                    id="g_panelHeader">
+                    data-mobile="
+                    grid-template-columns: 1fr;
+                    text-align: center;">
                     <div></div>
                     <a style="
                         display: block;
@@ -149,7 +156,8 @@ function renderHeader($title, $description) {
                     font-size: 5rem;
                     font-weight: bold;
                     color: #fff;"
-                    id="g_panelTitle">
+                    data-mobile="
+                    padding-top: 5rem;">
                     {$title}
                 </div>
                 <div style="
@@ -168,8 +176,10 @@ function renderHeader($title, $description) {
                 <img style="
                     width: 15rem;
                     height: 15rem;
-                    object-fit: contain;" src="assets/logo.png"
-                    id="g_imgLogo">
+                    object-fit: contain;"
+                    data-mobile="
+                    display: none;"
+                    src="assets/logo.png">
             </div>
         </div>
     HTML;
@@ -219,8 +229,9 @@ function renderRecipe($recipe) {
             grid-template-columns: max-content 1fr;
             padding: 1rem;
             padding-top: 0rem;"
-            href="recipe/?id={$recipe['id']}"
-            class="g_panelRecipe">
+            data-mobile="
+            grid-template-columns: 1fr;"
+            href="recipe/?id={$recipe['id']}">
             <div style="
                 width: 15rem;
                 height: 10rem;">
