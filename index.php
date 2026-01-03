@@ -24,7 +24,9 @@ require_once "common.php";
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             padding: 5rem;"
-            id="panelAbout">
+            data-mobile="
+            grid-template-columns: 1fr;
+            padding: 1rem;">
             <div>
                 <div style="
                     padding: 1rem;
@@ -68,7 +70,8 @@ require_once "common.php";
             display: grid;
             grid-template-columns: repeat(6, 1fr);
             padding-bottom: 5rem;"
-            id="panelCategories">
+            data-mobile="
+            grid-template-columns: 1fr;">
             <a style="
                 display: block;
                 padding: 1rem;"
@@ -218,27 +221,6 @@ require_once "common.php";
         <script src="script.js"></script>
         <script>
             if ("serviceWorker" in navigator) navigator.serviceWorker.register("service-worker.js");
-            const panelAbout = document.getElementById("panelAbout");
-            const panelCategories = document.getElementById("panelCategories");
-            initialize();
-
-            function initialize() {
-                const panelAboutOriginalStyles = panelAbout.style.cssText;
-                const panelCategoriesOriginalStyles = panelCategories.style.cssText;
-
-                window.onresize = () => {
-                    if (window.innerHeight > window.innerWidth) {
-                        panelAbout.style.gridTemplateColumns = "1fr";
-                        panelAbout.style.padding = "1rem";
-                        panelCategories.style.gridTemplateColumns = "1fr";
-                    } else {
-                        panelAbout.style.cssText = panelAboutOriginalStyles;
-                        panelCategories.style.cssText = panelCategoriesOriginalStyles;
-                    }
-                }
-
-                window.onresize();
-            }
         </script>
     </body>
 </html>
