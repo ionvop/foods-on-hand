@@ -28,10 +28,11 @@ if ($user == false) {
         <form style="
             display: grid;
             grid-template-columns: 2fr 1fr;"
+            data-mobile="
+            grid-template-columns: minmax(0, 1fr);"
             action="server.php"
             method="post"
-            enctype="multipart/form-data"
-            id="panelPosts">
+            enctype="multipart/form-data">
             <div>
                 <div style="
                     padding: 1rem;
@@ -108,22 +109,7 @@ if ($user == false) {
         <?= renderFooter() ?>
         <script src="script.js"></script>
         <script>
-            const panelPosts = document.getElementById("panelPosts");
-            initialize();
-
-            function initialize() {
-                const panelPostsOriginalStyles = panelPosts.style.cssText;
-
-                window.onresize = () => {
-                    if (window.innerHeight > window.innerWidth) {
-                        panelPosts.style.gridTemplateColumns = "minmax(0, 1fr)";
-                    } else {
-                        panelPosts.style.cssText = panelPostsOriginalStyles;
-                    }
-                }
-
-                window.onresize();
-            }
+            
         </script>
     </body>
 </html>
