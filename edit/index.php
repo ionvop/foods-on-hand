@@ -42,10 +42,11 @@ if ($recipe["user_id"] != $user["id"]) {
         <form style="
             display: grid;
             grid-template-columns: 2fr 1fr;"
+            data-mobile="
+            grid-template-columns: minmax(0, 1fr);"
             action="server.php"
             method="post"
-            enctype="multipart/form-data"
-            id="panelPosts">
+            enctype="multipart/form-data">
             <div>
                 <div style="
                     padding: 1rem;
@@ -142,30 +143,12 @@ if ($recipe["user_id"] != $user["id"]) {
                 value="<?= $recipe["id"] ?>">
         </form>
         <?= renderFooter() ?>
+        <script src="script.js"></script>
         <script>
             const btnDelete = document.getElementById("btnDelete");
 
             btnDelete.onclick = () => {
                 return confirm("Are you sure you want to delete this recipe?");
-            }
-        </script>
-        <script src="script.js"></script>
-        <script>
-            const panelPosts = document.getElementById("panelPosts");
-            initialize();
-
-            function initialize() {
-                const panelPostsOriginalStyles = panelPosts.style.cssText;
-
-                window.onresize = () => {
-                    if (window.innerHeight > window.innerWidth) {
-                        panelPosts.style.gridTemplateColumns = "minmax(0, 1fr)";
-                    } else {
-                        panelPosts.style.cssText = panelPostsOriginalStyles;
-                    }
-                }
-
-                window.onresize();
             }
         </script>
     </body>
