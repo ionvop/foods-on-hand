@@ -53,7 +53,8 @@ $author = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
         <div style="
             display: grid;
             grid-template-columns: minmax(0, 2fr) 1fr;"
-            id="panelPosts">
+            data-mobile="
+            grid-template-columns: minmax(0, 1fr);">
             <div>
                 <div style="
                     padding: 1rem;
@@ -230,27 +231,15 @@ $author = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
         <script src="script.js"></script>
         <script>
             const panelContent = document.getElementById("panelContent");
-            const panelPosts = document.getElementById("panelPosts");
             initialize();
 
             function initialize() {
-                const panelPostsOriginalStyles = panelPosts.style.cssText;
                 g_panelBackground.style.backgroundImage = <?= json_encode("linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(uploads/" . $recipe["image"] . ")") ?>;
                 panelContent.innerHTML = marked.parse(<?= json_encode($recipe["content"]) ?>);
 
                 for (const time of document.getElementsByClassName("time")) {
                     time.innerHTML = new Date(parseInt(time.innerHTML) * 1000).toLocaleString();
                 }
-
-                window.onresize = () => {
-                    if (window.innerHeight > window.innerWidth) {
-                        panelPosts.style.gridTemplateColumns = "minmax(0, 1fr)";
-                    } else {
-                        panelPosts.style.cssText = panelPostsOriginalStyles;
-                    }
-                }
-
-                window.onresize();
             }
         </script>
     </body>
