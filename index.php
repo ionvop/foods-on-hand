@@ -59,6 +59,20 @@ require_once "common.php";
         </div>
         <div style="
             padding: 1rem;
+            text-align: center;">
+            <a style="
+                display: inline-block;"
+                href="recipes/">
+                <button style="
+                    background-color: #a00;
+                    color: #fff;
+                    font-weight: bold;">
+                    View Recipes
+                </button>
+            </a>
+        </div>
+        <div style="
+            padding: 1rem;
             padding-top: 5rem;
             padding-bottom: 1rem;
             text-align: center;
