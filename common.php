@@ -84,6 +84,7 @@ function renderHeader($title, $description) {
             cursor: pointer;"
             data-mobile="
             padding: 2rem;"
+            class="g_panelTab"
             href="login/">
             LOGIN
         </a>
@@ -99,6 +100,7 @@ function renderHeader($title, $description) {
                 cursor: pointer;"
                 data-mobile="
                 padding: 2rem;"
+                class="g_panelTab"
                 href="profile/">
                 PROFILE
             </a>
@@ -210,6 +212,8 @@ function renderFooter() {
 }
 
 function renderRecipe($recipe) {
+    $db = new SQLite3("database.db");
+
     $categoryMap = [
         "pork" => "Pork",
         "chicken" => "Chicken",
@@ -223,17 +227,20 @@ function renderRecipe($recipe) {
     $title = htmlentities($recipe["title"]);
     $category = $categoryMap[$recipe["category"]];
 
+    $query = <<<SQL
+        SELECT * FROM `users` WHERE `id` = :id
+    SQL;
+
+    $stmt = $db->prepare($query);
+    $stmt->bindValue(":id", $recipe["user_id"]);
+    $author = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+
     echo <<<HTML
         <a style="
-            display: grid;
-            grid-template-columns: max-content 1fr;
             padding: 1rem;
             padding-top: 0rem;"
-            data-mobile="
-            grid-template-columns: 1fr;"
             href="recipe/?id={$recipe['id']}">
             <div style="
-                width: 15rem;
                 height: 10rem;">
                 <img style="
                     width: 100%;
@@ -251,7 +258,17 @@ function renderRecipe($recipe) {
                     {$title}
                 </div>
                 <div style="
-                    padding: 1rem;">
+                    padding: 1rem;
+                    padding-top: 0rem;
+                    font-size: 0.7rem;
+                    color: #555;">
+                    Author: {$author["firstname"]} {$author["lastname"]}
+                </div>
+                <div style="
+                    padding: 1rem;
+                    padding-top: 0rem;
+                    font-size: 0.7rem;
+                    color: #555;">
                     Category: {$category}
                 </div>
             </div>
