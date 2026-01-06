@@ -1,3 +1,4 @@
+const g_panelBackground = document.getElementById("g_panelBackground");
 g_initialize();
 
 function g_initialize() {
