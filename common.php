@@ -118,7 +118,8 @@ function renderHeader($title, $description) {
             data-mobile="
             height: 40rem;
             background-attachment: scroll;
-            background-size: cover;">
+            background-size: cover;"
+            id="g_panelBackground">
             <div>
                 <div style="
                     display: grid;
