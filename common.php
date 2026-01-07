@@ -70,7 +70,7 @@ function getUser() {
     return $user;
 }
 
-function renderHeader($title, $description) {
+function renderHeader($title, $description, $descriptionLink = false) {
     $title = str_replace("\n", "<br>", $title);
     $description = str_replace("\n", "<br>", $description);
     $user = getUser();
@@ -83,7 +83,7 @@ function renderHeader($title, $description) {
             font-weight: bold;
             cursor: pointer;"
             data-mobile="
-            padding: 2rem;"
+            padding: 1rem;"
             class="g_panelTab"
             href="login/">
             LOGIN
@@ -99,11 +99,37 @@ function renderHeader($title, $description) {
                 font-weight: bold;
                 cursor: pointer;"
                 data-mobile="
-                padding: 2rem;"
+                padding: 1rem;"
                 class="g_panelTab"
-                href="profile/">
+                href="profile/?id={$user['id']}">
                 PROFILE
             </a>
+        HTML;
+    }
+
+    if ($descriptionLink == false) {
+        $descriptionBlock = <<<HTML
+            <div style="
+                padding: 5rem;
+                padding-top: 0rem;
+                font-size: 1.5rem;
+                color: #fff;">
+                {$description}
+            </div>
+        HTML;
+    } else {
+        $descriptionBlock = <<<HTML
+            <div style="
+                padding: 5rem;
+                padding-top: 0rem;
+                font-size: 1.5rem;
+                color: #fff;">
+                <a style="
+                    display: inline-block;"
+                    href="{$descriptionLink}">
+                    {$description}
+                </a>
+            </div>
         HTML;
     }
 
@@ -116,7 +142,7 @@ function renderHeader($title, $description) {
             background-attachment: fixed;
             background-position: center;"
             data-mobile="
-            height: 40rem;
+            height: 45rem;
             background-attachment: scroll;
             background-size: cover;"
             id="g_panelBackground">
@@ -135,6 +161,8 @@ function renderHeader($title, $description) {
                         color: #fff;
                         font-weight: bold;
                         cursor: pointer;"
+                        data-mobile="
+                        padding: 1rem;"
                         class="g_panelTab"
                         href="./">
                         HOME
@@ -145,6 +173,8 @@ function renderHeader($title, $description) {
                         color: #fff;
                         font-weight: bold;
                         cursor: pointer;"
+                        data-mobile="
+                        padding: 1rem;"
                         class="g_panelTab"
                         href="recipes/">
                         RECIPES
@@ -163,13 +193,7 @@ function renderHeader($title, $description) {
                     padding-top: 5rem;">
                     {$title}
                 </div>
-                <div style="
-                    padding: 5rem;
-                    padding-top: 0rem;
-                    font-size: 1.5rem;
-                    color: #fff;">
-                    {$description}
-                </div>
+                {$descriptionBlock}
             </div>
             <div style="
                 position: absolute;
