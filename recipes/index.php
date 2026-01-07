@@ -43,7 +43,9 @@ if (isset($_GET["category"])) {
                     display: grid;
                     grid-template-columns: repeat(3, 1fr);
                     padding: 1rem;
-                    padding-top: 2rem;">
+                    padding-top: 2rem;"
+                    data-mobile="
+                    grid-template-columns: 1fr;">
                     <?php
                         if ($category == "all") {
                             if (isset($_GET["q"])) {
@@ -83,8 +85,21 @@ if (isset($_GET["category"])) {
                             }
                         }
 
+                        $count = 0;
+
                         while ($recipe = $recipes->fetchArray(SQLITE3_ASSOC)) {
                             renderRecipe($recipe);
+                            $count++;
+                        }
+
+                        if ($count == 0) {
+                            echo <<<HTML
+                                <div style="
+                                    padding: 1rem;
+                                    text-align: center;">
+                                    No recipes found.
+                                </div>
+                            HTML;
                         }
                     ?>
                 </div>
