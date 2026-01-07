@@ -30,7 +30,9 @@ if ($user == false) {
             grid-template-columns: 1fr max-content 1fr">
             <div></div>
             <div style="
-                width: 30rem;">
+                width: 30rem;"
+                data-mobile="
+                width: 100%;">
                 <form action="server.php"
                     method="post"
                     enctype="multipart/form-data">
@@ -153,4 +155,5 @@ if ($user == false) {
         </div>
         <?= renderFooter() ?>
     </body>
+    <script src="script.js"></script>
 </html>
