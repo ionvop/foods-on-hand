@@ -49,7 +49,7 @@ $author = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
         </style>
     </head>
     <body>
-        <?= renderHeader($recipe["title"], "Author: " . $author["firstname"] . " " . $author["lastname"]) ?>
+        <?= renderHeader($recipe["title"], "Author: " . $author["firstname"] . " " . $author["lastname"], "profile/?id=" . $author["id"]) ?>
         <div style="
             display: grid;
             grid-template-columns: minmax(0, 2fr) 1fr;"
@@ -75,6 +75,52 @@ $author = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
             </div>
             <div style="
                 background-color: #eee;">
+                <div style="
+                    display: grid;
+                    grid-template-columns: 1fr max-content;">
+                    <div></div>
+                    <form style="
+                        padding: 1rem;"
+                        action="server.php"
+                        method="post"
+                        enctype="multipart/form-data">
+                        <?php
+                            $query = <<<SQL
+                                SELECT * FROM `bookmarks` WHERE `user_id` = :user_id AND `recipe_id` = :recipe_id
+                            SQL;
+
+                            $stmt = $db->prepare($query);
+                            $stmt->bindValue(":user_id", $user["id"]);
+                            $stmt->bindValue(":recipe_id", $recipe["id"]);
+                            $bookmark = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+
+                            if ($bookmark == false) {
+                                echo <<<HTML
+                                    <button style="
+                                        background-color: #a00;
+                                        color: #fff;"
+                                        name="method"
+                                        value="bookmark">
+                                        Bookmark
+                                    </button>
+                                HTML;
+                            } else {
+                                echo <<<HTML
+                                    <button style="
+                                        background-color: #a00;
+                                        color: #fff;"
+                                        name="method"
+                                        value="unbookmark">
+                                        Unbookmark
+                                    </button>
+                                HTML;
+                            }
+                        ?>
+                        <input type="hidden"
+                            name="id"
+                            value="<?= $recipe["id"] ?>">
+                    </form>
+                </div>
                 <div style="
                     padding: 1rem;
                     font-size: 1.5rem;">
@@ -240,6 +286,8 @@ $author = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
                 for (const time of document.getElementsByClassName("time")) {
                     time.innerHTML = new Date(parseInt(time.innerHTML) * 1000).toLocaleString();
                 }
+
+                panelContent.scrollIntoView();
             }
         </script>
     </body>
