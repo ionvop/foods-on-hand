@@ -158,8 +158,8 @@ $author = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
 
                             $stmt = $db->prepare($query);
                             $stmt->bindValue(":id", $comment["user_id"]);
-                            $user = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
-                            $username = htmlentities($user["username"]);
+                            $author = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+                            $username = htmlentities($author["username"]);
                             
                             $delete = <<<HTML
                                 <div></div>
