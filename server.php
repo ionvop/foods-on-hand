@@ -34,6 +34,12 @@ if (isset($_POST["method"])) {
         case "change_password":
             changePassword();
             break;
+        case "bookmark":
+            bookmark();
+            break;
+        case "unbookmark":
+            unbookmark();
+            break;
         default:
             defaultMethod();
             break;
@@ -340,6 +346,45 @@ function changePassword() {
     $stmt->bindValue(":hash", $hash);
     $stmt->execute();
     header("Location: profile/");
+}
+
+function bookmark() {
+    $db = new SQLite3("database.db");
+    $user = getUser();
+
+    if ($user == false) {
+        alert("You are not logged in.");
+    }
+
+    $query = <<<SQL
+        INSERT INTO `bookmarks` (`user_id`, `recipe_id`)
+        VALUES (:user_id, :recipe_id);
+    SQL;
+
+    $stmt = $db->prepare($query);
+    $stmt->bindValue(":user_id", $user["id"]);
+    $stmt->bindValue(":recipe_id", $_POST["id"]);
+    $stmt->execute();
+    header("Location: recipe/?id={$_POST['id']}");
+}
+
+function unbookmark() {
+    $db = new SQLite3("database.db");
+    $user = getUser();
+
+    if ($user == false) {
+        alert("You are not logged in.");
+    }
+
+    $query = <<<SQL
+        DELETE FROM `bookmarks` WHERE `user_id` = :user_id AND `recipe_id` = :recipe_id
+    SQL;
+
+    $stmt = $db->prepare($query);
+    $stmt->bindValue(":user_id", $user["id"]);
+    $stmt->bindValue(":recipe_id", $_POST["id"]);
+    $stmt->execute();
+    header("Location: recipe/?id={$_POST['id']}");
 }
 
 function defaultMethod() {
