@@ -2,13 +2,24 @@
 
 chdir("../");
 require_once "common.php";
+$db = new SQLite3("database.db");
 $user = getUser();
 
-if ($user == false) {
-    alert("You are not logged in");
+if (isset($_GET["id"]) == false) {
+    alert("Invalid profile");
 }
 
-$db = new SQLite3("database.db");
+$query = <<<SQL
+    SELECT * FROM `users` WHERE `id` = :id
+SQL;
+
+$stmt = $db->prepare($query);
+$stmt->bindValue(":id", $_GET["id"]);
+$target = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+
+if ($target == false) {
+    alert("Invalid profile");
+}
 
 ?>
 
@@ -26,7 +37,7 @@ $db = new SQLite3("database.db");
         </style>
     </head>
     <body>
-        <?= renderHeader("Profile", "Your profile") ?>
+        <?= renderHeader("Profile", "More details about this user") ?>
         <div style="
             display: grid;
             grid-template-columns: 2fr 1fr;"
@@ -41,7 +52,7 @@ $db = new SQLite3("database.db");
                 </div>
                 <div style="
                     display: grid;
-                    grid-template-columns: repeat(2, 1fr);
+                    grid-template-columns: repeat(3, 1fr);
                     padding: 1rem;
                     padding-top: 0rem;">
                     <?php
@@ -50,11 +61,73 @@ $db = new SQLite3("database.db");
                         SQL;
 
                         $stmt = $db->prepare($query);
-                        $stmt->bindValue(":user_id", $user["id"]);
+                        $stmt->bindValue(":user_id", $target["id"]);
                         $recipes = $stmt->execute();
+                        $count = 0;
 
                         while ($recipe = $recipes->fetchArray(SQLITE3_ASSOC)) {
                             renderRecipe($recipe);
+                            $count++;
+                        }
+
+                        if ($count == 0) {
+                            echo <<<HTML
+                                <div style="
+                                    padding: 1rem;
+                                    text-align: center;
+                                    font-size: 1.5rem;
+                                    color: #555;">
+                                    No recipes yet
+                                </div>
+                            HTML;
+                        }
+                    ?>
+                </div>
+                <div style="
+                    padding: 1rem;
+                    padding-top: 5rem;
+                    font-size: 2rem;
+                    font-weight: bold;">
+                    Bookmarks:
+                </div>
+                <div style="
+                    display: grid;
+                    grid-template-columns: repeat(3, 1fr);
+                    padding: 1rem;
+                    padding-top: 0rem;">
+                    <?php
+                        $query = <<<SQL
+                            SELECT * FROM `bookmarks` WHERE `user_id` = :user_id
+                        SQL;
+
+                        $stmt = $db->prepare($query);
+                        $stmt->bindValue(":user_id", $target["id"]);
+                        $bookmarks = $stmt->execute();
+                        $count = 0;
+
+                        while ($bookmark = $bookmarks->fetchArray(SQLITE3_ASSOC)) {
+                            $query = <<<SQL
+                                SELECT * FROM `recipes` WHERE `id` = :id
+                            SQL;
+
+                            $stmt = $db->prepare($query);
+                            $stmt->bindValue(":id", $bookmark["recipe_id"]);
+                            $recipe = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+
+                            renderRecipe($recipe);
+                            $count++;
+                        }
+
+                        if ($count == 0) {
+                            echo <<<HTML
+                                <div style="
+                                    padding: 1rem;
+                                    text-align: center;
+                                    font-size: 1.5rem;
+                                    color: #555;">
+                                    No bookmarks yet
+                                </div>
+                            HTML;
                         }
                     ?>
                 </div>
@@ -66,42 +139,62 @@ $db = new SQLite3("database.db");
                     text-align: center;
                     font-size: 2rem;
                     font-weight: bold;">
-                    <?= htmlentities($user["firstname"] . " " . $user["lastname"]) ?>
+                    <?= htmlentities($target["firstname"] . " " . $target["lastname"]) ?>
                 </div>
                 <div style="
                     padding: 1rem;
                     text-align: center;
                     font-size: 1.5rem;
                     color: #555;">
-                    <?= htmlentities($user["username"]) ?>
+                    <?= htmlentities($target["username"]) ?>
                 </div>
                 <div style="
                     padding: 1rem;
-                    text-align: center;">
-                    <a style="
-                        display: inline-block;"
-                        href="profile/edit/">
-                        <button style="
-                            background-color: #a00;
-                            color: #fff;">
-                            Edit Profile
-                        </button>
-                    </a>
+                    padding-bottom: 0.5rem;
+                    text-align: center;
+                    color: #555;">
+                    Contact number:
                 </div>
-                <form style="
+                <div style="
                     padding: 1rem;
-                    text-align: center;"
-                    action="server.php"
-                    method="post"
-                    enctype="multipart/form-data">
-                    <button style="
-                        background-color: #a00;
-                        color: #fff;"
-                        name="method"
-                        value="logout">
-                        Logout
-                    </button>
-                </form>
+                    padding-top: 0rem;
+                    text-align: center;
+                    color: #555;">
+                    <?= htmlentities($target["phone"]) ?>
+                </div>
+                <?php
+                    if ($target["id"] == $user["id"]) {
+                        echo <<<HTML
+                            <div style="
+                                padding: 1rem;
+                                text-align: center;">
+                                <a style="
+                                    display: inline-block;"
+                                    href="profile/edit/">
+                                    <button style="
+                                        background-color: #a00;
+                                        color: #fff;">
+                                        Edit Profile
+                                    </button>
+                                </a>
+                            </div>
+                            <form style="
+                                padding: 1rem;
+                                text-align: center;"
+                                action="server.php"
+                                method="post"
+                                enctype="multipart/form-data">
+                                <button style="
+                                    background-color: #a00;
+                                    color: #fff;"
+                                    name="method"
+                                    value="logout">
+                                    Logout
+                                </button>
+                            </form>
+                        HTML;
+                    }
+                ?>
             </div>
         </div>
         <?= renderFooter() ?>
