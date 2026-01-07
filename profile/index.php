@@ -54,7 +54,9 @@ if ($target == false) {
                     display: grid;
                     grid-template-columns: repeat(3, 1fr);
                     padding: 1rem;
-                    padding-top: 0rem;">
+                    padding-top: 0rem;"
+                    data-mobile="
+                    grid-template-columns: 1fr;">
                     <?php
                         $query = <<<SQL
                             SELECT * FROM `recipes` WHERE `user_id` = :user_id
@@ -94,7 +96,9 @@ if ($target == false) {
                     display: grid;
                     grid-template-columns: repeat(3, 1fr);
                     padding: 1rem;
-                    padding-top: 0rem;">
+                    padding-top: 0rem;"
+                    data-mobile="
+                    grid-template-columns: 1fr;">
                     <?php
                         $query = <<<SQL
                             SELECT * FROM `bookmarks` WHERE `user_id` = :user_id
