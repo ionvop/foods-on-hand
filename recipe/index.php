@@ -87,35 +87,37 @@ $author = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
                         method="post"
                         enctype="multipart/form-data">
                         <?php
-                            $query = <<<SQL
-                                SELECT * FROM `bookmarks` WHERE `user_id` = :user_id AND `recipe_id` = :recipe_id
-                            SQL;
+                            if ($user != false) {
+                                $query = <<<SQL
+                                    SELECT * FROM `bookmarks` WHERE `user_id` = :user_id AND `recipe_id` = :recipe_id
+                                SQL;
 
-                            $stmt = $db->prepare($query);
-                            $stmt->bindValue(":user_id", $user["id"]);
-                            $stmt->bindValue(":recipe_id", $recipe["id"]);
-                            $bookmark = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+                                $stmt = $db->prepare($query);
+                                $stmt->bindValue(":user_id", $user["id"]);
+                                $stmt->bindValue(":recipe_id", $recipe["id"]);
+                                $bookmark = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
 
-                            if ($bookmark == false) {
-                                echo <<<HTML
-                                    <button style="
-                                        background-color: #a00;
-                                        color: #fff;"
-                                        name="method"
-                                        value="bookmark">
-                                        Bookmark
-                                    </button>
-                                HTML;
-                            } else {
-                                echo <<<HTML
-                                    <button style="
-                                        background-color: #a00;
-                                        color: #fff;"
-                                        name="method"
-                                        value="unbookmark">
-                                        Unbookmark
-                                    </button>
-                                HTML;
+                                if ($bookmark == false) {
+                                    echo <<<HTML
+                                        <button style="
+                                            background-color: #a00;
+                                            color: #fff;"
+                                            name="method"
+                                            value="bookmark">
+                                            Bookmark
+                                        </button>
+                                    HTML;
+                                } else {
+                                    echo <<<HTML
+                                        <button style="
+                                            background-color: #a00;
+                                            color: #fff;"
+                                            name="method"
+                                            value="unbookmark">
+                                            Unbookmark
+                                        </button>
+                                    HTML;
+                                }
                             }
                         ?>
                         <input type="hidden"
@@ -189,6 +191,14 @@ $author = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
                                         name="recipe_id"
                                         value="{$recipe['id']}">
                                 </form>
+                            HTML;
+                        } else {
+                            echo <<<HTML
+                                <div style="
+                                    padding: 1rem;
+                                    text-align: center;">
+                                    You must be logged in to comment
+                                </div>
                             HTML;
                         }
                     ?>
