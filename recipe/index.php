@@ -52,7 +52,7 @@ $author = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
         <?= renderHeader($recipe["title"], "Author: " . $author["firstname"] . " " . $author["lastname"], "profile/?id=" . $author["id"]) ?>
         <div style="
             display: grid;
-            grid-template-columns: minmax(0, 2fr) 1fr;"
+            grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);"
             data-mobile="
             grid-template-columns: minmax(0, 1fr);">
             <div>
@@ -74,6 +74,8 @@ $author = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
                 </div>
             </div>
             <div style="
+                display: grid;
+                grid-template-rows: repeat(5, max-content) repeat(2, 1fr);
                 background-color: #eee;">
                 <div style="
                     display: grid;
@@ -126,68 +128,74 @@ $author = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
                     font-size: 1.5rem;">
                     Category: <?= $categoryMap[$recipe["category"]] ?>
                 </div>
-                <?php
-                    if ($user != false) {
-                        if ($user["id"] == $recipe["user_id"]) {
-                            echo <<<HTML
-                                <div style="
-                                    padding: 1rem;
-                                    text-align: center;">
-                                    <a style="
-                                        display: inline-block;"
-                                        href="edit/?id={$recipe['id']}">
-                                        <button style="
-                                            background-color: #a00;
-                                            color: #fff;">
-                                            Edit
-                                        </button>
-                                    </a>
-                                </div>
-                            HTML;
+                <div>
+                    <?php
+                        if ($user != false) {
+                            if ($user["id"] == $recipe["user_id"]) {
+                                echo <<<HTML
+                                    <div style="
+                                        padding: 1rem;
+                                        text-align: center;">
+                                        <a style="
+                                            display: inline-block;"
+                                            href="edit/?id={$recipe['id']}">
+                                            <button style="
+                                                background-color: #a00;
+                                                color: #fff;">
+                                                Edit
+                                            </button>
+                                        </a>
+                                    </div>
+                                HTML;
+                            }
                         }
-                    }
-                ?>
+                    ?>
+                </div>
                 <div style="
                     padding: 1rem;
                     font-size: 1.5rem;">
                     Comments:
                 </div>
-                <?php
-                    if ($user != false) {
-                        echo <<<HTML
-                            <form action="server.php"
-                                method="post"
-                                enctype="multipart/form-data">
-                                <div style="
-                                    padding: 1rem;">
-                                    <textarea style="
-                                        height: 10rem;"
-                                        name="content"
-                                        placeholder="Write a comment..."></textarea>
-                                </div>
-                                <div style="
-                                    display: grid;
-                                    grid-template-columns: 1fr max-content;">
-                                    <div></div>
+                <div>
+                    <?php
+                        if ($user != false) {
+                            echo <<<HTML
+                                <form action="server.php"
+                                    method="post"
+                                    enctype="multipart/form-data">
                                     <div style="
                                         padding: 1rem;">
-                                        <button style="
-                                            background-color: #a00;
-                                            color: #fff;"
-                                            name="method"
-                                            value="comment">
-                                            Comment
-                                        </button>
+                                        <textarea style="
+                                            height: 10rem;"
+                                            name="content"
+                                            placeholder="Write a comment..."></textarea>
                                     </div>
-                                </div>
-                                <input type="hidden"
-                                    name="recipe_id"
-                                    value="{$recipe['id']}">
-                            </form>
-                        HTML;
-                    }
-                ?>
-                <div>
+                                    <div style="
+                                        display: grid;
+                                        grid-template-columns: 1fr max-content;">
+                                        <div></div>
+                                        <div style="
+                                            padding: 1rem;">
+                                            <button style="
+                                                background-color: #a00;
+                                                color: #fff;"
+                                                name="method"
+                                                value="comment">
+                                                Comment
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <input type="hidden"
+                                        name="recipe_id"
+                                        value="{$recipe['id']}">
+                                </form>
+                            HTML;
+                        }
+                    ?>
+                </div>
+                <div style="
+                    max-height: 40rem;
+                    overflow-y: auto;">
                     <?php
                         $query = <<<SQL
                             SELECT * FROM `comments` WHERE `recipe_id` = :recipe_id ORDER BY `id` DESC
@@ -270,6 +278,63 @@ $author = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
                         }
                     ?>
                 </div>
+                <div style="
+                    display: grid;
+                    grid-template-rows: max-content 1fr repeat(2, max-content);
+                    height: 40rem;
+                    background-color: #ddd;">
+                    <div style="
+                        padding: 1rem;
+                        font-size: 1.5rem;
+                        font-weight: bold;">
+                        AI Assistant Chat
+                    </div>
+                    <div style="
+                        overflow-y: auto;"
+                        id="panelChat">
+                    </div>
+                    <div style="
+                        display: grid;
+                        grid-template-columns: max-content 1fr;">
+                        <div style="
+                            padding: 1rem;">
+                            <div style="
+                                display: flex;
+                                align-items: center;
+                                padding: 1rem;
+                                padding-top: 0rem;
+                                padding-bottom: 0rem;
+                                height: 2rem;
+                                background-color: #fff;
+                                border-radius: 1rem;
+                                cursor: pointer;"
+                                id="btnPrompt">
+                                Can you adjust the recipe for 2 people?
+                            </div>
+                        </div>
+                    </div>
+                    <div style="
+                        display: grid;
+                        grid-template-columns: 1fr max-content;">
+                        <div style="
+                            display: flex;
+                            align-items: center;
+                            padding: 1rem;
+                            padding-top: 0rem;">
+                            <input placeholder="Chat to AI..."
+                                id="inputChat">
+                        </div>
+                        <div style="
+                            display: flex;
+                            align-items: center;
+                            padding: 1rem;
+                            padding-top: 0rem;
+                            padding-left: 0rem;"
+                            id="btnSend">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#aa0000"><path d="M176-183q-20 8-38-3.5T120-220v-180l320-80-320-80v-180q0-22 18-33.5t38-3.5l616 260q25 11 25 37t-25 37L176-183Z"/></svg>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <?= renderFooter() ?>
@@ -277,6 +342,25 @@ $author = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
         <script src="script.js"></script>
         <script>
             const panelContent = document.getElementById("panelContent");
+            const panelChat = document.getElementById("panelChat");
+            const inputChat = document.getElementById("inputChat");
+            const btnSend = document.getElementById("btnSend");
+            const btnPrompt = document.getElementById("btnPrompt");
+
+            const chat = [
+                {
+                    role: "system",
+                    content: "You are a helpful assistant that will answer questions about this recipe.\n\n" +
+                        "Title: " + <?= json_encode($recipe["title"]) ?> + "\n\n" +
+                        "Author: " + <?= json_encode($author["firstname"] . " " . $author["lastname"]) ?> + "\n\n" +
+                        "Content:\n" + <?= json_encode($recipe["content"]) ?>
+                },
+                {
+                    role: "assistant",
+                    content: "Hello! How can I help you?"
+                }
+            ];
+
             initialize();
 
             function initialize() {
@@ -288,7 +372,105 @@ $author = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
                 }
 
                 panelContent.scrollIntoView();
+                renderChats();
             }
+
+            function renderChats() {
+                panelChat.innerHTML = "";
+
+                for (const message of chat) {
+                    switch (message.role) {
+                        case "user": {
+                            panelChat.innerHTML += `
+                                <div style="
+                                    display: grid;
+                                    grid-template-columns: 1fr minmax(0, max-content)">
+                                    <div style="
+                                        min-width: 5rem;">
+                                    </div>
+                                    <div style="
+                                        padding: 1rem;">
+                                        <div style="
+                                            padding: 1rem;
+                                            padding-top: 0.5rem;
+                                            padding-bottom: 0.5rem;
+                                            background-color: #eee;
+                                            border-radius: 1rem;">
+                                            ${marked.parse(message.content)}
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                        } break;
+                        case "assistant": {
+                            panelChat.innerHTML += `
+                                <div style="
+                                    display: grid;
+                                    grid-template-columns: minmax(0, max-content) 1fr">
+                                    <div style="
+                                        padding: 1rem;">
+                                        <div style="
+                                            padding: 1rem;
+                                            padding-top: 0.5rem;
+                                            padding-bottom: 0.5rem;
+                                            background-color: #a00;
+                                            color: #fff;
+                                            border-radius: 1rem;">
+                                            ${marked.parse(message.content)}
+                                        </div>
+                                    </div>
+                                    <div style="
+                                        min-width: 5rem;">
+                                    </div>
+                                </div>
+                            `;
+                        } break;
+                    }
+                }
+
+                panelChat.scrollTop = panelChat.scrollHeight;
+            }
+
+            function sendChat() {
+                btnPrompt.style.display = "none";
+
+                chat.push({
+                    role: "user",
+                    content: inputChat.value
+                });
+
+                inputChat.value = "";
+                renderChats();
+
+                fetch("api/chat/", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        messages: chat
+                    })
+                }).then(response => response.json()).then(data => {
+                    console.log(data);
+                    chat.push(data.choices[0].message);
+                    renderChats();
+                });
+            }
+
+            btnSend.onclick = () => {
+                sendChat();
+            }
+
+            inputChat.onkeydown = (e) => {
+                if (e.key === "Enter") {
+                    sendChat();
+                }
+            };
+
+            btnPrompt.onclick = () => {
+                inputChat.value = "Can you adjust the recipe for 2 people?";
+                sendChat();
+            };
         </script>
     </body>
 </html>
